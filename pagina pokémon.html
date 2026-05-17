@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pokédex</title>
+
+  <link rel="stylesheet" href="pagina pokémon.css">
+</head>
+
+<body>
+  
+<script>
+
+    const URL = "https://pokeapi.co/api/v2/pokemon/";
+
+    let pokemonActual = 1;
+
+    async function cargarpokemon(valor){
+
+      const nombre = document.getElementById("nombre");
+      const foto = document.getElementById("imagen");
+      
+      const input = document.getElementById("busqueda");
+
+     
+     
+
+   
+        const respuesta = await fetch(URL + valor);
+
+        const dato = await respuesta.json();
+
+        pokemonActual = dato.id;
+
+        nombre.textContent =
+          `${dato.id} - ${dato.name.toUpperCase()}`;
+
+        foto.src = dato.sprites.front_default;
+
+        foto.alt = dato.name;
+
+        input.value = dato.name;
+
+      
+    }
+
+    function buscar(){
+
+      const busqueda = document
+        .getElementById("busqueda").value.trim().toLowerCase();
+
+      cargarpokemon(busqueda);
+    }
+
+    function siguiente(){
+
+
+
+      if(pokemonActual < 1025 ||pokemonActual>10000 && pokemonActual!=10325){
+      pokemonActual++;
+
+      cargarpokemon(pokemonActual);}
+else{
+      if(pokemonActual =10325 )
+      {pokemonActual=1; cargarpokemon(pokemonActual);} 
+      else{pokemonActual=10001; cargarpokemon(pokemonActual); }}
+
+      
+    }
+
+    function anterior(){
+
+
+
+      if(pokemonActual > 1 && pokemonActual!=10001 ){
+
+        pokemonActual--;
+
+        cargarpokemon(pokemonActual);
+      }
+      else{
+        if(pokemonActual =1 )
+      {pokemonActual=10325; cargarpokemon(pokemonActual);} else{
+        pokemonActual=1025; cargarpokemon(pokemonActual);}}
+
+      
+    }
+
+    cargarpokemon(1);
+
+  </script>
+
+
+
+  <div class="container">
+
+    <div class="titulo">Pokedéx</div>
+
+    <input 
+      type="text" 
+      id="busqueda" 
+      
+    >
+
+    <div class="botones">
+
+ <button onclick="anterior()">
+        <- Anterior
+      </button>
+
+
+      <button onclick="buscar()">
+        Buscar
+      </button>
+
+     
+
+      <button onclick="siguiente()">
+        Siguiente ->
+      </button>
+
+    </div>
+
+    <h2 id="nombre"></h2>
+
+    <img id="imagen" src="">
+
+     
+
+  </div>
+
+  
+
+</body>
+</html>
